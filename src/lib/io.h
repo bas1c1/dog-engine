@@ -5,11 +5,15 @@
 #define DOG_ENGINE_IO
 
 #include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include "../../ext/include/wfsgl32.h"
 #include "../../ext/include/png.h"
 
 namespace IO {
-    std::vector<Pixel> loadPNG(const char* filename) {
+    inline std::vector<Pixel> loadPNG(const char* filename) {
         std::vector<Pixel> rgbData;
 
         FILE* file;

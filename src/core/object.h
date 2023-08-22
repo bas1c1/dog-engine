@@ -5,6 +5,7 @@
 #include "component.h"
 #include "../lib/helper.h"
 #include "../lib/exception.h"
+#include "sprite.h"
 #include "../../ext/include/wfsgl32.h"
 #include <unordered_map>
 #include "transform.h"
@@ -34,7 +35,6 @@ public:
 	}
 
 	virtual void update() {
-#pragma omp parallel for
 		for (auto component : components) {
 			component.second->update();
 		}

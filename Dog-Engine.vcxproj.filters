@@ -74,5 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="shaders\fragmentShader.shader" />
+    <None Include="shaders\vertexShader.shader" />
   </ItemGroup>
 </Project>

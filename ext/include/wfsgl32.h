@@ -1,5 +1,3 @@
-#pragma once
-
 #pragma comment(lib, "user32.lib")		// Visual Studio Only
 #pragma comment(lib, "gdi32.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -7,6 +5,7 @@
 
 #ifndef WFSGL_LIB
 #define WFSGL_LIB
+#pragma once
 
 #include <cstdint>
 #include <string>
@@ -17,7 +16,24 @@
 #include <chrono>
 #include "gl.h"
 
-#define glCustomWriteTexture(fSubPixelOffsetX, fSubPixelOffsetY) { glBegin(GL_QUADS); glTexCoord2f(0.0, 1.0); glVertex3f(-1.0f + fSubPixelOffsetX, -1.0f + fSubPixelOffsetY, 0.0f);glTexCoord2f(0.0, 0.0); glVertex3f(-1.0f + fSubPixelOffsetX, 1.0f + fSubPixelOffsetY, 0.0f);glTexCoord2f(1.0, 0.0); glVertex3f(1.0f + fSubPixelOffsetX, 1.0f + fSubPixelOffsetY, 0.0f);glTexCoord2f(1.0, 1.0); glVertex3f(1.0f + fSubPixelOffsetX, -1.0f + fSubPixelOffsetY, 0.0f); glEnd(); }
+#ifndef _WIN32
+#error Your system is not supported
+#else
+#include <Windows.h>
+#endif
+
+#define glCustomWriteTexture() {\
+    glBegin(GL_QUADS); \
+    glTexCoord2f(0.0, 1.0); \
+    glVertex3f(-1.0f, -1.0f, 0.0f); \
+    glTexCoord2f(0.0, 0.0); \
+    glVertex3f(-1.0f, 1.0f, 0.0f); \
+    glTexCoord2f(1.0, 0.0); \
+    glVertex3f(1.0f , 1.0f, 0.0f); \
+    glTexCoord2f(1.0, 1.0); \
+    glVertex3f(1.0f, -1.0f, 0.0f); \
+    glEnd(); \
+ }
 
 #ifndef WSGL_PIXEL
 #define WSGL_PIXEL
@@ -138,10 +154,10 @@ static float lerp(float a, float b, float t) { return a + t * (b - a); }
 
 #endif
 
+static bool isEngineActive = true;
+
 void mainloop();
 void on_start();
-
-static bool isEngineActive = true;
 
 static class WFSGL {
 private:
@@ -165,11 +181,6 @@ private:
 
     GLuint glBuffer;
 
-    float fSubPixelOffsetX;
-    float fSubPixelOffsetY;
-
-    float deltaTime = 0.0f;
-
     void WFSGLChangeNameWithFPS(float fps) {
         wchar_t s[256];
         swprintf_s(s, 256, L"%s - FPS: %3.2f", name, fps);
@@ -177,12 +188,14 @@ private:
     }
 
 public:
+    float deltaTime = 0.0f;
+
     int width;
     int height;
 
     int windowScale;
 
-    Pixel *screenPixels;
+    Pixel* screenPixels;
 
     float FPS;
 
@@ -214,8 +227,6 @@ public:
         this->windowScale = 1;
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
-        this->fSubPixelOffsetX = 0.0f;
-        this->fSubPixelOffsetY = 0.0f;
         this->screenPixels = new Pixel[width * height];
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
@@ -230,8 +241,6 @@ public:
         this->windowScale = windowScale;
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
-        this->fSubPixelOffsetX = 0.0f;
-        this->fSubPixelOffsetY = 0.0f;
         this->screenPixels = new Pixel[width * height];
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
@@ -327,9 +336,8 @@ public:
     }
 
     void WFSGLFill(Pixel p) {
-#pragma omp parallel for shared(width)
+//#pragma omp parallel for
         for (int i = 0; i < width; i++) {
-#pragma omp parallel for shared(height)
             for (int j = 0; j < height; j++) {
                 screenPixels[j * width + i] = p;
             }
@@ -380,7 +388,7 @@ public:
             return false;
 
     }
-    
+
     void WFSGLStartEngine() {
         glEnable(GL_TEXTURE_2D);
         glGenTextures(1, &glBuffer);
@@ -390,10 +398,12 @@ public:
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
+        glViewport(nViewX, nViewY, nViewW, nViewH);
 
         on_start();
 
         MSG msg;
+
         while (GetMessage(&msg, NULL, 0, 0) > 0 && isEngineActive)
         {
             TranslateMessage(&msg);
@@ -402,12 +412,13 @@ public:
             auto time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> duration{ 0 };
 
+            WFSGLFillBuffer(std::vector<Pixel>(width * height));
             mainloop();
 
-            glViewport(nViewX, nViewY, nViewW, nViewH);
-
             glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
-            glCustomWriteTexture(fSubPixelOffsetX, fSubPixelOffsetY);
+
+            glCustomWriteTexture();
+
             SwapBuffers(glDeviceContext);
 
             auto endTime = std::chrono::high_resolution_clock::now();
@@ -421,6 +432,7 @@ public:
         wglDeleteContext(glRenderContext);
         PostMessage(hWnd, WM_DESTROY, 0, 0);
     }
+
 };
 
 #endif

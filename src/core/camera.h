@@ -25,7 +25,6 @@ public:
 
 	void update() override {
 		this->uv = uv;
-		this->get_transfrom()->update();
 		this->pos = get_transfrom()->getPos();
 	}
 

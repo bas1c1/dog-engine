@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "../lib/io.h"
 
+
 class sprite : public base_component {
 private:
 	WFSGL ctx;
@@ -63,15 +64,14 @@ public:
 		this->Draw();
 	}
 
+
 	void Draw() {
-#pragma omp parallel for
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				vec2d point = mainCamera.project(vec2d(x + pos.x, y + pos.y));
 				ctx.WFSGLSetPixel(point.x, point.y, pixels[x + y * width]);
 			}
 		}
-		
 	}
 
 	bool FillArea(vec2d f, vec2d s, Pixel color) {

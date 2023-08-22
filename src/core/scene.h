@@ -4,6 +4,7 @@
 #include "../../ext/include/wfsgl32.h"
 #include "sprite.h"
 #include "object.h"
+#include <thread>
 
 class scene {
 private:
@@ -33,8 +34,6 @@ public:
 
 	void renderScene() {
 		mainCamera.update();
-		sortByLayers();
-#pragma omp parallel for
 		for (object a : objects) {
 			a.update();
 		}
