@@ -8,10 +8,8 @@ class camera : object {
 private:
 	vec2d uv;
 	vec2d pos;
-	WFSGL ctx;
 
 public:
-	std::vector<Pixel> screenPixels;
 	camera() {
 		this->uv = vec2d().zero();
 		this->add_component<transform>(transform(vec2d().zero()));
@@ -22,8 +20,6 @@ public:
 		this->uv = vec2d(width, height);
 		this->add_component<transform>(transform(pos));
 		this->pos = pos;
-		this->ctx = ctx;
-		this->screenPixels = std::vector<Pixel>(width * height);
 	}
 
 	void update() override {

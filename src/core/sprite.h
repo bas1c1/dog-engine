@@ -4,8 +4,6 @@
 #include "../../ext/include/wfsgl32.h"
 #include "component.h"
 #include "camera.h"
-#include <future>
-#include <vector>
 
 class sprite : public base_component {
 private:
