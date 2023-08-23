@@ -2,11 +2,10 @@
 #define DOG_ENGINE_SPRITES
 
 #include "../../ext/include/wfsgl32.h"
-#include "../lib/math.h"
 #include "component.h"
 #include "camera.h"
-#include "../lib/io.h"
-
+#include <future>
+#include <vector>
 
 class sprite : public base_component {
 private:
@@ -50,7 +49,7 @@ public:
 		this->pos = vec2d(px, py) - vec2d(width / 2, height / 2);
 	}
 
-	void fromFile(const char* filename, WFSGL ctx, int width, int height, int px = 0, int py = 0, camera cam2d = mainCamera) {
+	sprite(const char* filename, WFSGL ctx, int width, int height, int px = 0, int py = 0, camera cam2d = mainCamera) {
 		this->pixels = IO::loadPNG(filename);
 		this->width = width;
 		this->height = height;
@@ -60,16 +59,14 @@ public:
 	}
 
 	void update() override {
-		this->cam2d = cam2d;
-		this->Draw();
-	}
+		for (int y = 0; y < height; ++y) {
+			const int sprite_y = y + pos.y;
+			for (int x = 0; x < width; ++x) {
+				const int sprite_x = x + pos.x;
+				const int pixel_index = y * width + x;
+				const vec2d proj(mainCamera.project(sprite_x, sprite_y));
 
-
-	void Draw() {
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				vec2d point = mainCamera.project(vec2d(x + pos.x, y + pos.y));
-				ctx.WFSGLSetPixel(point.x, point.y, pixels[x + y * width]);
+				ctx.WFSGLSetPixel(proj.x, proj.y, pixels[pixel_index]);
 			}
 		}
 	}

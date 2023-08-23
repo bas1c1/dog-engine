@@ -3,12 +3,11 @@
 
 #include <vector>
 #include "component.h"
-#include "../lib/helper.h"
-#include "../lib/exception.h"
 #include "sprite.h"
 #include "../../ext/include/wfsgl32.h"
 #include <unordered_map>
-#include "transform.h"
+
+class transform;
 
 class object {
 private:

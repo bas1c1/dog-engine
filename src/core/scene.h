@@ -2,9 +2,9 @@
 #define DOG_ENGINE_SCENE2D
 
 #include "../../ext/include/wfsgl32.h"
+#include "../lib/io.h"
+#include "transform.h"
 #include "sprite.h"
-#include "object.h"
-#include <thread>
 
 class scene {
 private:
@@ -34,6 +34,7 @@ public:
 
 	void renderScene() {
 		mainCamera.update();
+		
 		for (object a : objects) {
 			a.update();
 		}

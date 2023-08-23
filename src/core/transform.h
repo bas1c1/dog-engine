@@ -18,8 +18,8 @@ public:
 	}
 
 	void update() override {
-		this->pos = pos;
-		this->localScale = localScale;
+		//this->pos = pos;
+		//this->localScale = localScale;
 	}
 
 	void moveToPos(vec2d newPos) {

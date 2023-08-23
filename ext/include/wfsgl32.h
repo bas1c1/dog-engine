@@ -181,6 +181,8 @@ private:
 
     GLuint glBuffer;
 
+    std::vector<Pixel> empty;
+
     void WFSGLChangeNameWithFPS(float fps) {
         wchar_t s[256];
         swprintf_s(s, 256, L"%s - FPS: %3.2f", name, fps);
@@ -228,6 +230,7 @@ public:
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
         this->screenPixels = new Pixel[width * height];
+        this->empty = std::vector<Pixel>(width*height);
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
     }
@@ -242,6 +245,7 @@ public:
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
         this->screenPixels = new Pixel[width * height];
+        this->empty = std::vector<Pixel>(width * height);
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
     }
@@ -336,7 +340,6 @@ public:
     }
 
     void WFSGLFill(Pixel p) {
-//#pragma omp parallel for
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 screenPixels[j * width + i] = p;
@@ -412,7 +415,7 @@ public:
             auto time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> duration{ 0 };
 
-            WFSGLFillBuffer(std::vector<Pixel>(width * height));
+            std::copy(empty.begin(), empty.end(), screenPixels);
             mainloop();
 
             glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);

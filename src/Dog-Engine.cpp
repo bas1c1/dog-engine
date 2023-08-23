@@ -1,10 +1,9 @@
 ﻿#include "../ext/include/wfsgl32.h"
 #include <iostream>
 #include "core/scene.h"
-#include "core/object.h"
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1680
+#define HEIGHT 1050
 
 using namespace std::chrono;
 
@@ -16,28 +15,12 @@ WFSGL wfsgl(WIDTH, HEIGHT, sw, 1);
 scene m;
 
 void on_start() {
-    mainCamera = camera(WIDTH, HEIGHT, vec2d(0, 0));
-    
+    mainCamera = camera(WIDTH, HEIGHT, vec2d(0, 0), wfsgl);
+
     object game_object = object(800, 200, vec2d(0, 0), 0);
-    game_object.add_component<sprite>(wfsgl, 800, 200, 0, 0);
-    game_object.get_component<sprite>()->fromFile("sprites/800x200.png", wfsgl, 800, 200, 0, 0);
-
-    object game_object1 = object(800, 200, vec2d(0, 100), 1);
-    game_object1.add_component<sprite>(wfsgl, 800, 200, 0, 0);
-    game_object1.get_component<sprite>()->fromFile("sprites/800x200.png", wfsgl, 800, 200, 0, 300);
-
-    object game_object2 = object(800, 200, vec2d(0, 200), 2);
-    game_object2.add_component<sprite>(wfsgl, 800, 200, 0, 0);
-    game_object2.get_component<sprite>()->fromFile("sprites/800x200.png", wfsgl, 800, 200, 0, 600);
-
-    object game_object3 = object(800, 200, vec2d(0, 300), 3);
-    game_object3.add_component<sprite>(wfsgl, 800, 200, 0, 0);
-    game_object3.get_component<sprite>()->fromFile("sprites/800x200.png", wfsgl, 800, 200, 0, 900);
+    game_object.add_component<sprite>("sprites/800x200.png", wfsgl, 800, 200, 0, 0);
 
     m.addObject(game_object);
-    m.addObject(game_object1);
-    m.addObject(game_object2);
-    m.addObject(game_object3);
 }
 
 void mainloop() {
