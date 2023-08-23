@@ -33,8 +33,8 @@ public:
 #define FASTPROJECTX(x, width, camx)  x - camx + width /  2
 #define FASTPROJECTY(y, height, camy) y - camy + height / 2
 
-	inline vec2d project(float px, float py) {
-		return vec2d(FASTPROJECTX(px, uv.x, pos .x), FASTPROJECTX(py, uv.y, pos.y));
+	inline vec2d project(vec2d point) {
+		return vec2d(FASTPROJECTX(point.x, uv.x, pos.x), FASTPROJECTX(point.y, uv.y, pos.y));
 	}
 };
 

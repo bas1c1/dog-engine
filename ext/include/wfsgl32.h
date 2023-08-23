@@ -22,19 +22,6 @@
 #include <Windows.h>
 #endif
 
-#define glCustomWriteTexture() {\
-    glBegin(GL_QUADS); \
-    glTexCoord2f(0.0, 1.0); \
-    glVertex3f(-1.0f, -1.0f, 0.0f); \
-    glTexCoord2f(0.0, 0.0); \
-    glVertex3f(-1.0f, 1.0f, 0.0f); \
-    glTexCoord2f(1.0, 0.0); \
-    glVertex3f(1.0f , 1.0f, 0.0f); \
-    glTexCoord2f(1.0, 1.0); \
-    glVertex3f(1.0f, -1.0f, 0.0f); \
-    glEnd(); \
- }
-
 #ifndef WSGL_PIXEL
 #define WSGL_PIXEL
 
@@ -154,14 +141,15 @@ static float lerp(float a, float b, float t) { return a + t * (b - a); }
 
 #endif
 
-static bool isEngineActive = true;
-
 void mainloop();
 void on_start();
 
-static class WFSGL {
+static bool isEngineActive = true;
+
+typedef BOOL(WINAPI wglSwapInterval_t) (int interval);
+
+class WFSGL {
 private:
-    typedef BOOL(WINAPI wglSwapInterval_t) (int interval);
     wglSwapInterval_t* wglSwapInterval;
 
     LPCWSTR name;
@@ -181,7 +169,10 @@ private:
 
     GLuint glBuffer;
 
-    std::vector<Pixel> empty;
+    float fSubPixelOffsetX;
+    float fSubPixelOffsetY;
+
+    float FPS;
 
     void WFSGLChangeNameWithFPS(float fps) {
         wchar_t s[256];
@@ -197,9 +188,7 @@ public:
 
     int windowScale;
 
-    Pixel* screenPixels;
-
-    float FPS;
+    Pixel *screenPixels;
 
     void UpdateViewport()
     {
@@ -229,8 +218,9 @@ public:
         this->windowScale = 1;
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
+        this->fSubPixelOffsetX = 0.0f;
+        this->fSubPixelOffsetY = 0.0f;
         this->screenPixels = new Pixel[width * height];
-        this->empty = std::vector<Pixel>(width*height);
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
     }
@@ -244,8 +234,9 @@ public:
         this->windowScale = windowScale;
         this->halfScreenWidth = width / 2;
         this->halfScreenHeight = height / 2;
+        this->fSubPixelOffsetX = 0.0f;
+        this->fSubPixelOffsetY = 0.0f;
         this->screenPixels = new Pixel[width * height];
-        this->empty = std::vector<Pixel>(width * height);
         for (int i = 0; i < width * height; i++)
             this->screenPixels[i] = Pixel(0, 0, 0);
     }
@@ -340,11 +331,8 @@ public:
     }
 
     void WFSGLFill(Pixel p) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                screenPixels[j * width + i] = p;
-            }
-        }
+        glClearColor((float) p.r / 255.0f, (float) p.g / 255.0f, (float) p.b / 255.0f, (float) p.a / 255.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     bool WFSGLSetPixel(int x, int y, Pixel p) {
@@ -391,22 +379,15 @@ public:
             return false;
 
     }
-
+    
     void WFSGLStartEngine() {
         glEnable(GL_TEXTURE_2D);
-        glGenTextures(1, &glBuffer);
-        glBindTexture(GL_TEXTURE_2D, glBuffer);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
-        glViewport(nViewX, nViewY, nViewW, nViewH);
 
         on_start();
 
-        MSG msg;
+        glViewport(nViewX, nViewY, nViewW, nViewH);
 
+        MSG msg;
         while (GetMessage(&msg, NULL, 0, 0) > 0 && isEngineActive)
         {
             TranslateMessage(&msg);
@@ -415,13 +396,8 @@ public:
             auto time = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> duration{ 0 };
 
-            std::copy(empty.begin(), empty.end(), screenPixels);
             mainloop();
-
-            glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, screenPixels);
-
-            glCustomWriteTexture();
-
+            
             SwapBuffers(glDeviceContext);
 
             auto endTime = std::chrono::high_resolution_clock::now();
@@ -435,7 +411,6 @@ public:
         wglDeleteContext(glRenderContext);
         PostMessage(hWnd, WM_DESTROY, 0, 0);
     }
-
 };
 
 #endif

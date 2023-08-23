@@ -5,6 +5,19 @@
 #include "component.h"
 #include "camera.h"
 
+#define SCREEN_TO_NDC_X(x) (x / ctx.width * 2 - 1)
+#define SCREEN_TO_NDC_Y(y) (y / ctx.height * 2 - 1)
+#define writeSprite(pos, offset) glBegin(GL_QUADS);\
+								 glTexCoord2f(0, 1);\
+								 glVertex2f(SCREEN_TO_NDC_X(pos.x), SCREEN_TO_NDC_Y(pos.y));\
+								 glTexCoord2f(0, 0);\
+								 glVertex2f(SCREEN_TO_NDC_X(pos.x), SCREEN_TO_NDC_Y(offset.y));\
+								 glTexCoord2f(1, 0);\
+								 glVertex2f(SCREEN_TO_NDC_X(offset.x), SCREEN_TO_NDC_Y(offset.y));\
+								 glTexCoord2f(1, 1);\
+								 glVertex2f(SCREEN_TO_NDC_X(offset.x), SCREEN_TO_NDC_Y(pos.y));\
+								 glEnd();\
+
 class sprite : public base_component {
 private:
 	WFSGL ctx;
@@ -13,6 +26,7 @@ private:
 	int height;
 	vec2d pos;
 	camera cam2d;
+	GLuint gpuTexture;
 
 public:
 
@@ -54,19 +68,32 @@ public:
 		this->ctx = ctx;
 		this->cam2d = cam2d;
 		this->pos = vec2d(px, py) - vec2d(width / 2, height / 2);
+
+		GenerateGPUTexture();
 	}
 
 	void update() override {
-		for (int y = 0; y < height; ++y) {
-			const int sprite_y = y + pos.y;
-			for (int x = 0; x < width; ++x) {
-				const int sprite_x = x + pos.x;
-				const int pixel_index = y * width + x;
-				const vec2d proj(mainCamera.project(sprite_x, sprite_y));
+		this->cam2d = cam2d;
+		this->Draw();
+	}
 
-				ctx.WFSGLSetPixel(proj.x, proj.y, pixels[pixel_index]);
-			}
-		}
+	void Draw() {
+		vec2d oldPos = pos;
+		pos = mainCamera.project(pos);
+		const vec2d offset(pos.x + width, pos.y + height);
+
+		writeSprite(pos, offset);
+
+		this->pos = oldPos;
+	}
+
+	void GenerateGPUTexture() {
+		glGenTextures(1, &gpuTexture);
+		glBindTexture(GL_TEXTURE_2D, gpuTexture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
 	}
 
 	bool FillArea(vec2d f, vec2d s, Pixel color) {
