@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\camera.cpp" />
+    <ClCompile Include="src\core\object.cpp" />
+    <ClCompile Include="src\core\scene.cpp" />
+    <ClCompile Include="src\core\sprite.cpp" />
+    <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\Dog-Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -26,7 +31,8 @@
     <ClInclude Include="ext\include\png.h" />
     <ClInclude Include="ext\include\pngconf.h" />
     <ClInclude Include="ext\include\pnglibconf.h" />
-    <ClInclude Include="ext\include\wfsgl32.h" />
+    <ClInclude Include="src\core\definitions.h" />
+    <ClInclude Include="src\lib\wfsgl32.h" />
     <ClInclude Include="ext\include\zconf.h" />
     <ClInclude Include="ext\include\zlib.h" />
     <ClInclude Include="src\core\camera.h" />
