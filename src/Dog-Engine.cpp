@@ -1,4 +1,4 @@
-﻿#define WIDTH 1680
+#define WIDTH 1680
 #define HEIGHT 1050
 
 #pragma comment(lib, "d3d9.lib")
@@ -42,7 +42,7 @@ void on_start() {
 
     game_object1 = object("obj2", 0);
     game_object1.add_component<transform>(800, 200, vec2d(802, 0), globalCtx);
-    //game_object1.get_component<transform>()->setScale(vec2d(2, 2));
+    game_object1.get_component<transform>()->setScale(vec2d(2, 2));
     game_object1.add_component<box_collider2D>();
     game_object1.get_component<box_collider2D>()->bindTransform(game_object1.get_component<transform>());
     game_object1.get_component<box_collider2D>()->bindScene(&mainScene);
