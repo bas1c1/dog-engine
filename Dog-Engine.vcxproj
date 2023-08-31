@@ -19,8 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ext\include\imgui\imgui.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="ext\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\core\box_collider2D.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
+    <ClCompile Include="src\core\external.cpp" />
+    <ClCompile Include="src\core\gui.cpp" />
     <ClCompile Include="src\core\object.cpp" />
+    <ClCompile Include="src\core\rectangle.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\sprite.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
@@ -28,19 +40,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\include\gl.h" />
+    <ClInclude Include="ext\include\imgui\imconfig.h" />
+    <ClInclude Include="ext\include\imgui\imgui.h" />
+    <ClInclude Include="ext\include\imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="ext\include\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="ext\include\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="ext\include\imgui\imgui_internal.h" />
+    <ClInclude Include="ext\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="ext\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="ext\include\imgui\imstb_truetype.h" />
     <ClInclude Include="ext\include\png.h" />
     <ClInclude Include="ext\include\pngconf.h" />
     <ClInclude Include="ext\include\pnglibconf.h" />
     <ClInclude Include="src\core\definitions.h" />
+    <ClInclude Include="src\core\gui.h" />
     <ClInclude Include="src\lib\wfsgl32.h" />
     <ClInclude Include="ext\include\zconf.h" />
     <ClInclude Include="ext\include\zlib.h" />
-    <ClInclude Include="src\core\camera.h" />
-    <ClInclude Include="src\core\component.h" />
-    <ClInclude Include="src\core\object.h" />
-    <ClInclude Include="src\core\scene.h" />
-    <ClInclude Include="src\core\sprite.h" />
-    <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\lib\exception.h" />
     <ClInclude Include="src\lib\helper.h" />
     <ClInclude Include="src\lib\io.h" />
@@ -109,8 +125,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Roman\source\repos\Dog-Engine\ext\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Roman\source\repos\Dog-Engine\ext\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\dxlib\Include;C:\Users\Roman\source\repos\Dog-Engine\ext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dxlib\Lib;C:\Users\Roman\source\repos\Dog-Engine\ext\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
