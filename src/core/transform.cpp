@@ -33,8 +33,8 @@ void transform::update() {
 		vec2d(SCREEN_TO_NDC_X(offset.x), SCREEN_TO_NDC_Y(pos.y))
 	};
 
-	//rotateObj(rotationAngle);
-	//scaleObj(scale);
+	rotateObj(rotationAngle);
+	scaleObj(scale);
 	
 	this->pos = oldPos;
 }
