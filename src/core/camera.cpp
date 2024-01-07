@@ -16,7 +16,10 @@ camera::camera(int width, int height, vec2d pos, WFSGL& ctx) {
 
 void camera::update() {
 	this->pos = get_component<transform>()->getPos();
-	glOrtho(-zoom, zoom, -zoom, zoom, -1.5, 1.5);
+	if (zoom > 0)
+		glOrtho(-zoom, zoom, -zoom, zoom, -1.5, 1.5);
+	else
+		glOrtho(-0.0001, 0.0001, -0.0001, 0.0001, -1.5, 1.5);
 	glTranslatef(-pos.x / 100, -pos.y / 100, 0);
 }
 
@@ -26,4 +29,28 @@ object camera::gameObject() {
 
 vec2d camera::project(vec2d point) {
 	return vec2d(FASTPROJECTX(point.x, uv.x), FASTPROJECTX(point.y, uv.y));
+}
+
+vec2d camera::getUV() {
+	return this->uv;
+}
+
+float camera::getZoom() {
+	return this->zoom;
+}
+
+vec2d camera::getPos() {
+	return this->pos;
+}
+
+void camera::setUV(vec2d uv) {
+	this->uv = uv;
+}
+
+void camera::setZoom(float zoom) {
+	this->zoom = zoom;
+}
+
+void camera::setPos(vec2d pos) {
+	this->pos = pos;
 }

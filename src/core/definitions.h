@@ -1,8 +1,11 @@
 #ifndef DOG_ENGINE_DEFINITIONS
 #define DOG_ENGINE_DEFINITIONS
 
-#define PUBLIC_SCREEN_TO_NDC_X(x) (x / ctx->width * 2 - 1)
-#define PUBLIC_SCREEN_TO_NDC_Y(y) (y / ctx->height * 2 - 1)
+#define SCREEN_TO_NDC(v) (vec2d(v.x / ctx.width * 2 - 1, v.y / ctx.height * 2 - 1))
+#define PUBLIC_SCREEN_TO_NDC(v) (vec2d(v.x / ctx->width * 2 - 1, v.y / ctx->height * 2 - 1))
+
+#define PUBLIC_SCREEN_TO_NDC_X(x) (x / 1680 * 2 - 1)
+#define PUBLIC_SCREEN_TO_NDC_Y(y) (y / 1050 * 2 - 1)
 
 #define SCREEN_TO_NDC_X(x) (x / ctx.width * 2 - 1)
 #define SCREEN_TO_NDC_Y(y) (y / ctx.height * 2 - 1)
@@ -22,14 +25,42 @@
 #define FASTPROJECTY(y, height) y + height / 2
 
 #include <vector>
-#include "../lib/wfsgl32.h"
 #include <unordered_map>
+#include "../lib/objectType.h"
+#include "../lib/wfsgl32.h"
+#include "../lib/vec.h"
 
 class camera;
 class object;
 class sprite;
 class transform;
 class scene;
+
+class Quaternion {
+public:
+	float w, x, y, z = 0.0f;
+	Quaternion(float w, float x, float y, float z)
+		: w(w), x(x), y(y), z(z) {}
+
+	Quaternion operator*(const Quaternion& other) const {
+		return Quaternion(
+			w * other.w - x * other.x - y * other.y - z * other.z,
+			w * other.x + x * other.w + y * other.z - z * other.y,
+			w * other.y - x * other.z + y * other.w + z * other.x,
+			w * other.z + x * other.y - y * other.x + z * other.w
+		);
+	}
+
+	Quaternion conjugate() const {
+		return Quaternion(w, -x, -y, -z);
+	}
+};
+
+struct AABB
+{
+	vec2d min;
+	vec2d max;
+};
 
 class base_component {
 public:
@@ -92,14 +123,22 @@ public:
 class camera : object {
 private:
 	vec2d uv;
-public:
 	float zoom = 1.f;
 	vec2d pos;
+public:
 	camera();
 	camera(int width, int height, vec2d pos, WFSGL& ctx);
 	void update() override;
 	object gameObject();
 	vec2d project(vec2d point);
+
+	vec2d getUV();
+	float getZoom();
+	vec2d getPos();
+
+	void setUV(vec2d uv);
+	void setZoom(float zoom);
+	void setPos(vec2d pos);
 };
 
 class rectangle {
@@ -141,6 +180,7 @@ private:
 	void scaleObj(vec2d scale);
 public:
 	std::vector<vec2d> square;
+	std::vector<vec2d> drawable_square;
 
 	transform();
 	transform(int width, int height, vec2d pos, WFSGL& ctx, ObjectType objType = ObjectType::BASE, vec2d localScale = vec2d(1, 1), float rotationAngle = 0);
@@ -177,6 +217,12 @@ public:
 		this->gameObject = gameObject;
 		this->colType = colType;
 	}
+
+	object* getGameObject();
+	collisionType getCollisionType();
+
+	void setGameObject(object* obj);
+	void setCollisionType(collisionType col);
 };
 
 class box_collider2D : public base_component {
@@ -194,7 +240,47 @@ public:
 	std::string toString() override;
 	std::vector<collision2D> getAllCollisions();
 	collision2D getCollision(int index=0);
+	rectangle getRectangle();
 };
+
+enum class rigidbodyType {
+	DYNAMIC,
+	STATIC,
+	KINEMATIC
+};
+
+class rigidbody2D : public base_component {
+private:
+	transform* tr;
+	scene* sc;
+	rigidbodyType rbType = rigidbodyType::DYNAMIC;
+	
+	float impulse = 0.0f;
+	float maxImpulse = 10.f;
+	int mass = 1;
+	float gravity = -9.81f;
+	vec2d velocity = vec2d(0, 0);
+
+public:
+	
+	void bindTransform(transform* tr);
+	void bindScene(scene* sc);
+	void update() override;
+	std::string toString() override;
+
+	void applyForce(vec2d force);
+	int resolveCollision(rigidbody2D* other);
+
+	void setVelocity(vec2d velocity);
+	vec2d getVelocity();
+	void setGravity(float gravity);
+	float getGravity();
+	void setMass(int mass);
+	int getMass();
+	void setType(rigidbodyType rbType);
+	rigidbodyType getType();
+};
+
 
 class sprite : public base_component {
 private:
@@ -229,7 +315,7 @@ public:
 	void setScale(vec2d scale);
 };
 
-static class scene {
+class scene {
 private:
 	std::vector<object*> objects;
 	std::vector<Pixel> screenBuffer;

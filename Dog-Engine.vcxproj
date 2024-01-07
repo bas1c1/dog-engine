@@ -27,16 +27,54 @@
     <ClCompile Include="ext\include\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="ext\include\imgui\imgui_tables.cpp" />
     <ClCompile Include="ext\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="ext\include\lua\lapi.c" />
+    <ClCompile Include="ext\include\lua\lauxlib.c" />
+    <ClCompile Include="ext\include\lua\lbaselib.c" />
+    <ClCompile Include="ext\include\lua\lcode.c" />
+    <ClCompile Include="ext\include\lua\lcorolib.c" />
+    <ClCompile Include="ext\include\lua\lctype.c" />
+    <ClCompile Include="ext\include\lua\ldblib.c" />
+    <ClCompile Include="ext\include\lua\ldebug.c" />
+    <ClCompile Include="ext\include\lua\ldo.c" />
+    <ClCompile Include="ext\include\lua\ldump.c" />
+    <ClCompile Include="ext\include\lua\lfunc.c" />
+    <ClCompile Include="ext\include\lua\lgc.c" />
+    <ClCompile Include="ext\include\lua\linit.c" />
+    <ClCompile Include="ext\include\lua\liolib.c" />
+    <ClCompile Include="ext\include\lua\llex.c" />
+    <ClCompile Include="ext\include\lua\lmathlib.c" />
+    <ClCompile Include="ext\include\lua\lmem.c" />
+    <ClCompile Include="ext\include\lua\loadlib.c" />
+    <ClCompile Include="ext\include\lua\lobject.c" />
+    <ClCompile Include="ext\include\lua\lopcodes.c" />
+    <ClCompile Include="ext\include\lua\loslib.c" />
+    <ClCompile Include="ext\include\lua\lparser.c" />
+    <ClCompile Include="ext\include\lua\lstate.c" />
+    <ClCompile Include="ext\include\lua\lstring.c" />
+    <ClCompile Include="ext\include\lua\lstrlib.c" />
+    <ClCompile Include="ext\include\lua\ltable.c" />
+    <ClCompile Include="ext\include\lua\ltablib.c" />
+    <ClCompile Include="ext\include\lua\ltm.c" />
+    <ClCompile Include="ext\include\lua\lua.c" />
+    <ClCompile Include="ext\include\lua\luac.c" />
+    <ClCompile Include="ext\include\lua\lundump.c" />
+    <ClCompile Include="ext\include\lua\lutf8lib.c" />
+    <ClCompile Include="ext\include\lua\lvm.c" />
+    <ClCompile Include="ext\include\lua\lzio.c" />
     <ClCompile Include="src\core\box_collider2D.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
+    <ClCompile Include="src\core\collision2D.cpp" />
     <ClCompile Include="src\core\external.cpp" />
     <ClCompile Include="src\core\gui.cpp" />
+    <ClCompile Include="src\core\lua_scripting.cpp" />
     <ClCompile Include="src\core\object.cpp" />
     <ClCompile Include="src\core\rectangle.cpp" />
+    <ClCompile Include="src\core\rigidbody2D.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\sprite.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\Dog-Engine.cpp" />
+    <ClCompile Include="src\lib\wfsgl32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\include\gl.h" />
@@ -49,11 +87,46 @@
     <ClInclude Include="ext\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="ext\include\imgui\imstb_textedit.h" />
     <ClInclude Include="ext\include\imgui\imstb_truetype.h" />
+    <ClInclude Include="ext\include\lua\lapi.h" />
+    <ClInclude Include="ext\include\lua\lauxlib.h" />
+    <ClInclude Include="ext\include\lua\lcode.h" />
+    <ClInclude Include="ext\include\lua\lctype.h" />
+    <ClInclude Include="ext\include\lua\ldebug.h" />
+    <ClInclude Include="ext\include\lua\ldo.h" />
+    <ClInclude Include="ext\include\lua\lfunc.h" />
+    <ClInclude Include="ext\include\lua\lgc.h" />
+    <ClInclude Include="ext\include\lua\ljumptab.h" />
+    <ClInclude Include="ext\include\lua\llex.h" />
+    <ClInclude Include="ext\include\lua\llimits.h" />
+    <ClInclude Include="ext\include\lua\lmem.h" />
+    <ClInclude Include="ext\include\lua\lobject.h" />
+    <ClInclude Include="ext\include\lua\lopcodes.h" />
+    <ClInclude Include="ext\include\lua\lopnames.h" />
+    <ClInclude Include="ext\include\lua\lparser.h" />
+    <ClInclude Include="ext\include\lua\lprefix.h" />
+    <ClInclude Include="ext\include\lua\lstate.h" />
+    <ClInclude Include="ext\include\lua\lstring.h" />
+    <ClInclude Include="ext\include\lua\ltable.h" />
+    <ClInclude Include="ext\include\lua\ltm.h" />
+    <ClInclude Include="ext\include\lua\lua.h" />
+    <ClInclude Include="ext\include\lua\lua.hpp" />
+    <ClInclude Include="ext\include\lua\luaconf.h" />
+    <ClInclude Include="ext\include\lua\lualib.h" />
+    <ClInclude Include="ext\include\lua\lundump.h" />
+    <ClInclude Include="ext\include\lua\lvm.h" />
+    <ClInclude Include="ext\include\lua\lzio.h" />
     <ClInclude Include="ext\include\png.h" />
     <ClInclude Include="ext\include\pngconf.h" />
     <ClInclude Include="ext\include\pnglibconf.h" />
+    <ClInclude Include="ext\include\sol\config.hpp" />
+    <ClInclude Include="ext\include\sol\forward.hpp" />
+    <ClInclude Include="ext\include\sol\sol.hpp" />
     <ClInclude Include="src\core\definitions.h" />
     <ClInclude Include="src\core\gui.h" />
+    <ClInclude Include="src\core\lua_scripting.h" />
+    <ClInclude Include="src\lib\objectType.h" />
+    <ClInclude Include="src\lib\Pixel.h" />
+    <ClInclude Include="src\lib\vec.h" />
     <ClInclude Include="src\lib\wfsgl32.h" />
     <ClInclude Include="ext\include\zconf.h" />
     <ClInclude Include="ext\include\zlib.h" />
@@ -125,8 +198,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\dxlib\Include;C:\Users\Roman\source\repos\Dog-Engine\ext\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\dxlib\Lib;C:\Users\Roman\source\repos\Dog-Engine\ext\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\dxlib\Include;D:\source\repos\Dog-Engine\ext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dxlib\Lib;D:\source\repos\Dog-Engine\ext\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -161,7 +234,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OpenMPSupport>true</OpenMPSupport>

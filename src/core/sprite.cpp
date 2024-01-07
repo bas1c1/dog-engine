@@ -60,7 +60,7 @@ void sprite::update() {
 
 	scaleObj(localScale);
 
-	writeSprite(tr->square);
+	writeSprite(tr->drawable_square);
 }
 
 std::string sprite::toString()

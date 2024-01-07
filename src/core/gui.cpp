@@ -1,7 +1,7 @@
 #include "gui.h"
 #include <stdio.h>
 #include "../lib/helper.h"
-
+extern float deltaTime;
 extern scene mainScene;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(
@@ -399,6 +399,9 @@ void dgui::Render() noexcept
 				if (ImGui::Button("Update")) {
 					spr->fromFile(text_buff);
 				}
+			}
+			else if (rigidbody2D* rb = dynamic_cast<rigidbody2D*>(component)) {
+
 			}
 		}
 	}
