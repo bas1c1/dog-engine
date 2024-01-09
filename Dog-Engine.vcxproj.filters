@@ -66,9 +66,6 @@
     <ClCompile Include="src\core\box_collider2D.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\rectangle.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\rigidbody2D.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>

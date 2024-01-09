@@ -68,7 +68,6 @@
     <ClCompile Include="src\core\gui.cpp" />
     <ClCompile Include="src\core\lua_scripting.cpp" />
     <ClCompile Include="src\core\object.cpp" />
-    <ClCompile Include="src\core\rectangle.cpp" />
     <ClCompile Include="src\core\rigidbody2D.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\sprite.cpp" />
