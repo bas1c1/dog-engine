@@ -18,6 +18,7 @@ gameObjectNew:get_box_collider2D():bindScene(mainSc)
 rb = gameObjectNew:add_rigidbody2D()
 gameObjectNew:get_rigidbody2D():bindTransform(tr)
 gameObjectNew:get_rigidbody2D():bindScene(mainSc)
+gameObjectNew:get_rigidbody2D().type = rigidbodyType.STATIC
 
 mainSc:addObject(objectRef(gameObjectNew))
 
