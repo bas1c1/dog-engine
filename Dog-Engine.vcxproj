@@ -61,6 +61,7 @@
     <ClCompile Include="ext\include\lua\lutf8lib.c" />
     <ClCompile Include="ext\include\lua\lvm.c" />
     <ClCompile Include="ext\include\lua\lzio.c" />
+    <ClCompile Include="src\core\animation.cpp" />
     <ClCompile Include="src\core\box_collider2D.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\collision2D.cpp" />
@@ -71,6 +72,7 @@
     <ClCompile Include="src\core\rigidbody2D.cpp" />
     <ClCompile Include="src\core\scene.cpp" />
     <ClCompile Include="src\core\sprite.cpp" />
+    <ClCompile Include="src\core\spriteRender.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\Dog-Engine.cpp" />
     <ClCompile Include="src\lib\wfsgl32.cpp" />
